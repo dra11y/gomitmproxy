@@ -426,7 +426,7 @@ func (p *Proxy) handleTunnel(session *Session) (err error) {
 			// TODO(ameshkov): Consider adding to invalidTLSHosts.
 			// We should do this if this happens a couple of times in a short
 			// period of time.
-			log.Error("id=%s: failed to handshake with the server: %v", session.ID(), err)
+			log.Debug("id=%s: failed to handshake with the server: %v", session.ID(), err)
 
 			return err
 		}
@@ -491,7 +491,7 @@ func (p *Proxy) handleConnect(session *Session) (err error) {
 
 		b := make([]byte, 1)
 		if _, err = session.ctx.localRW.Read(b); err != nil {
-			log.Error("id=%s: error peeking message through CONNECT tunnel to determine type: %v", session.ID(), err)
+			log.Debug("id=%s: error peeking message through CONNECT tunnel to determine type: %v", session.ID(), err)
 			return err
 		}
 
@@ -516,7 +516,7 @@ func (p *Proxy) handleConnect(session *Session) (err error) {
 				// TODO(ameshkov): Consider adding to invalidTLSHosts.
 				// We should do this if this happens a couple of times in a
 				// short period of time.
-				log.Error("id=%s: failed to handshake with the client: %v", session.ID(), err)
+				log.Debug("id=%s: failed to handshake with the client: %v", session.ID(), err)
 
 				return err
 			}
@@ -622,7 +622,7 @@ func (p *Proxy) writeResponse(session *Session) (err error) {
 	}
 
 	if err = session.res.Write(session.ctx.localRW); err != nil {
-		log.Error(
+		log.Debug(
 			"id=%s: got error while writing response back to client: %v",
 			session.ID(),
 			err,
@@ -630,7 +630,7 @@ func (p *Proxy) writeResponse(session *Session) (err error) {
 	}
 
 	if err = session.ctx.localRW.Flush(); err != nil {
-		log.Error(
+		log.Debug(
 			"id=%s: got error while flushing response back to client: %v",
 			session.ID(),
 			err,
